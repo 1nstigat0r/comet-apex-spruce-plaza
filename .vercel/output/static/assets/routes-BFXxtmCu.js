@@ -1,9 +1,4 @@
-import { i as __toESM } from "../_runtime.mjs";
-import { L as require_react, v as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-zoPUP2jf.js
-var import_react = /* @__PURE__ */ __toESM(require_react());
-var import_jsx_runtime = require_jsx_runtime();
-var DESK_HTML = `
+import{n as e,r as t,t as n}from"./index-DPjtcgyR.js";var r=t(e(),1),i=n(),a=`
 <header class="top">
   <div class="brand">
     <h1>דסק מלחמה — תימן</h1>
@@ -17,24 +12,14 @@ var DESK_HTML = `
 <section class="bars" id="bars"></section>
 <section class="situation" id="situation" tabindex="-1"></section>
 <div class="toolbar">
-  <div class="time-filter" id="time-filter" title="יום, טווח, כל העימות, או ציר שליטה">
+  <div class="time-filter" id="time-filter" title="יום במפה או כל העימות">
     <span class="tf-label">יום במפה:</span>
     <button type="button" id="btn-day-prev" class="day-nav" dir="ltr" aria-label="אחורה בזמן — יום קודם"><span>אחורה</span><span class="day-nav-arr" aria-hidden="true">→</span></button>
     <input type="date" id="map-date" min="2026-07-01" />
     <button type="button" id="btn-day-next" class="day-nav" dir="ltr" aria-label="קדימה בזמן — יום הבא"><span class="day-nav-arr" aria-hidden="true">←</span><span>קדימה</span></button>
     <button type="button" id="btn-day-today">היום</button>
     <span class="tf-sep" aria-hidden="true"></span>
-    <span class="tf-label">מ־</span>
-    <input type="date" id="map-from" min="2026-07-03" title="מתאריך" />
-    <span class="tf-to">עד</span>
-    <input type="date" id="map-to" min="2026-07-03" title="עד תאריך" />
-    <button type="button" id="btn-range-apply">הצג טווח</button>
     <button type="button" id="btn-conflict-all">כל העימות</button>
-    <div class="ctrl-slider-wrap">
-      <label class="tf-label" for="ctrl-slider">שליטה בשטח</label>
-      <input type="range" id="ctrl-slider" min="0" max="4" step="1" value="4" />
-      <span id="ctrl-slider-label" class="ctrl-slider-label"></span>
-    </div>
   </div>
   <button type="button" class="ghost" id="btn-focus-map">הגדל מפה</button>
 </div>
@@ -78,20 +63,4 @@ var DESK_HTML = `
 </footer>
 <div id="front-float" hidden></div>
 <div id="media-float" hidden></div>
-`;
-function YemenDesk() {
-	(0, import_react.useEffect)(() => {
-		const boot = window.startYemenDesk;
-		if (boot) boot();
-	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		id: "yemen-desk-root",
-		suppressHydrationWarning: true,
-		dangerouslySetInnerHTML: { __html: DESK_HTML }
-	});
-}
-function Home() {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(YemenDesk, {});
-}
-//#endregion
-export { Home as component };
+`;function o(){return(0,r.useEffect)(()=>{let e=window.startYemenDesk;e&&e()},[]),(0,i.jsx)(`div`,{id:`yemen-desk-root`,suppressHydrationWarning:!0,dangerouslySetInnerHTML:{__html:a}})}function s(){return(0,i.jsx)(o,{})}export{s as component};

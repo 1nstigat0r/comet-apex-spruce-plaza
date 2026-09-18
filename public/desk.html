@@ -6,7 +6,7 @@
   <title>דסק מלחמה — תימן</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/vendor/leaflet/leaflet.css" />
-  <link rel="stylesheet" href="/desk.css?v=desk-19sep-a" />
+  <link rel="stylesheet" href="/desk.css?v=desk-19sep-e" />
 </head>
 <body>
   <header class="top">
@@ -24,24 +24,14 @@
   <section class="situation" id="situation" tabindex="-1"></section>
 
   <div class="toolbar">
-    <div class="time-filter" id="time-filter" title="יום, טווח, כל העימות, או ציר שליטה">
+    <div class="time-filter" id="time-filter" title="יום במפה או כל העימות">
       <span class="tf-label">יום במפה:</span>
       <button type="button" id="btn-day-prev" class="day-nav" dir="ltr" aria-label="אחורה בזמן — יום קודם"><span>אחורה</span><span class="day-nav-arr" aria-hidden="true">→</span></button>
       <input type="date" id="map-date" min="2026-07-01" />
       <button type="button" id="btn-day-next" class="day-nav" dir="ltr" aria-label="קדימה בזמן — יום הבא"><span class="day-nav-arr" aria-hidden="true">←</span><span>קדימה</span></button>
       <button type="button" id="btn-day-today">היום</button>
       <span class="tf-sep" aria-hidden="true"></span>
-      <span class="tf-label">מ־</span>
-      <input type="date" id="map-from" min="2026-07-03" title="מתאריך" />
-      <span class="tf-to">עד</span>
-      <input type="date" id="map-to" min="2026-07-03" title="עד תאריך" />
-      <button type="button" id="btn-range-apply">הצג טווח</button>
       <button type="button" id="btn-conflict-all">כל העימות</button>
-      <div class="ctrl-slider-wrap">
-        <label class="tf-label" for="ctrl-slider">שליטה בשטח</label>
-        <input type="range" id="ctrl-slider" min="0" max="4" step="1" value="4" />
-        <span id="ctrl-slider-label" class="ctrl-slider-label"></span>
-      </div>
     </div>
     <button type="button" class="ghost" id="btn-focus-map">הגדל מפה</button>
   </div>
@@ -99,6 +89,6 @@
   <div id="media-float" hidden></div>
 
   <script src="/vendor/leaflet/leaflet.js"></script>
-  <script src="/app.js?v=desk-19sep-a"></script>
+  <script src="/app.js?v=desk-19sep-e"></script>
 </body>
 </html>

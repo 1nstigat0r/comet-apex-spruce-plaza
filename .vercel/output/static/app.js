@@ -18,6 +18,7 @@ const PLACE_COORDS = {
   "יַנְבּוּע":[24.0231,38.1899],
   "ינבוע":[24.0231,38.1899],
   "גִ׳דַּה":[21.4858,39.1925],
+  "עֻלָא":[26.61,37.92],
   "ג׳דה":[21.4858,39.1925],
   "מכה":[21.3891,39.8579],
   "ריאד":[24.7136,46.6753],
@@ -112,6 +113,8 @@ const PLACE_COORDS = {
   "אלברח":[13.48,43.72],
   "ראס תַנּוּרַה":[26.64,50.16],
   "ראס תנורה":[26.64,50.16],
+  "אבקייק":[25.933,49.667],
+  "עַבְּקַאיְק":[25.933,49.667],
   "ח׳מיס מושייט":[18.30,42.73],
   "אבהא":[18.22,42.50],
   "חריב":[14.93,45.50],
@@ -289,8 +292,9 @@ function tidyHebrewProse(text) {
   s = s.replace(/שבטים ואזור\s+(אלצֻבַּיְחַה)/g, 'שבטי $1');
   s = s.replace(/מזרח[־\-]מרכז/g, 'מזרח תימן');
   s = s.replace(/מרכז[־\-]מזרח/g, 'מזרח תימן');
-  s = s.replace(/בדרום[־\-]מערב(?!\s+(תימן|המדינה|הממלכה))/g, 'בדרום־מערב תימן');
-  s = s.replace(/(^|[^\u0590-\u05FF])דרום[־\-]מערב(?!\s+(תימן|המדינה|הממלכה))/g, '$1דרום־מערב תימן');
+  s = s.replace(/בדרום[־\-]מערב(?!\s+(תימן|המדינה|הממלכה|סעודיה))/g, 'בדרום־מערב תימן');
+  s = s.replace(/(^|[^\u0590-\u05FF])דרום[־\-]מערב(?!\s+(תימן|המדינה|הממלכה|סעודיה))/g, '$1דרום־מערב תימן');
+  s = s.replace(/דרום־מערב תימן סעודיה/g, 'דרום־מערב סעודיה');
   s = s.replace(/דרום־מערב תימן תימן/g, 'דרום־מערב תימן');
   s = s.replace(/מזרח תימן תימן/g, 'מזרח תימן');
   s = s.replace(/\s*…+\s*/g, '. ').replace(/\.{3,}/g, '. ');
@@ -330,11 +334,14 @@ expandPlaceAliasMaps();
 
 function placePhrase(name, meta) {
   if (!meta || meta.skip) return name;
+  // Well-known places — no geography lecture
+  if (/באב|צנעא|עדן|תעז|מאריב|אלמח׳א|מַיוּן|מיון|חַניש|חניש|אלחודיידה|לחג׳|סעדה|ריאד|ג׳יבוטי|ים האדום|אלדאלע|אלג׳וף|גִ׳דַּה|גדה|טאיף|יַנְבּוּע|ינבוע|ח׳מיס|עַבְּהַא|עבהא|ג׳אזאן|נג׳ראן|עֻלָא|מכה/.test(name)) {
+    return name;
+  }
   const kind = meta.kind || '';
   const where = meta.where || '';
   if (!kind) return name;
   if (!where) return kind + ' ' + name;
-  // «עיר הנמל אלמח׳א שבדרום־מערב המדינה» — never «מצר ימי» / never «ים ערב»
   if (/^[בלמ]/.test(where)) return kind + ' ' + name + ' ש' + where;
   return kind + ' ' + name + ' ' + where;
 }
@@ -417,12 +424,33 @@ let mapMode = 'day'; // day | range | all | control
 let mapDateFrom = null;
 let mapDateTo = null;
 let activeEpoch = null;
+let activeControlYmd = null;
 let controlOverlayLayers = [];
 const MAP_ROUND_START = '2026-07-01';
 const CONFLICT_START = '2026-07-03';
 const FRONT_HOME_VIEW = [15.35, 46.15, 6];
 const MAX_MAP_PINS = 80;
 const MAX_MAP_PINS_RANGE = 220;
+
+// West-coast strips that actually flipped in this round (Tihama / Bab).
+const COAST_AREAS = [
+  { id: 'mocha', nameHe: 'אלמח׳א והחוף', ring: [
+    [13.12, 43.08], [13.22, 43.06], [13.38, 43.10], [13.52, 43.18],
+    [13.50, 43.42], [13.32, 43.48], [13.18, 43.38]
+  ]},
+  { id: 'dhubab', nameHe: 'ד׳ובאב', ring: [
+    [12.72, 43.30], [12.88, 43.28], [13.08, 43.32], [13.12, 43.48],
+    [12.95, 43.58], [12.72, 43.50]
+  ]},
+  { id: 'khokha', nameHe: 'אלח׳וחה', ring: [
+    [13.68, 43.08], [13.88, 43.10], [13.95, 43.28], [13.82, 43.40],
+    [13.68, 43.32]
+  ]},
+  { id: 'hays', nameHe: 'חֵיס', ring: [
+    [13.90, 43.22], [14.15, 43.24], [14.20, 43.48], [14.00, 43.55],
+    [13.88, 43.42]
+  ]}
+];
 
 function reportTime(r) { return r.at || r.t || data?.updatedAt; }
 function eventTime(e) {
@@ -439,9 +467,10 @@ function eventTime(e) {
 function fmtStamp(ts) {
   if (!ts) return '';
   const d = new Date(ts);
+  if (!Number.isFinite(d.getTime())) return '';
   const date = d.toLocaleDateString('he-IL', { timeZone:'Asia/Jerusalem', day:'2-digit', month:'2-digit' });
   const time = d.toLocaleTimeString('he-IL', { timeZone:'Asia/Jerusalem', hour:'2-digit', minute:'2-digit', hour12:false });
-  return date + ' · ' + time;
+  return time + ' · ' + date;
 }
 
 function fmtClock(ts) {
@@ -1112,20 +1141,23 @@ function hebrewFallbackReport(r) {
   const loc = where || 'תימן';
   const kind = r && r.type;
   let summary, text;
-  if (kind === 'strike' || kind === 'missile' || kind === 'launch' || kind === 'drone') {
+  if (/התרעות|صفارات|صافرات/.test(blob)) {
+    summary = where ? `התרעות ב${loc}.` : 'התרעות בסעודיה.';
+    text = `לפי ${src}: הגנה אזרחית בסעודיה הפעילה התרעות${where ? ' ב' + loc : ' בסעודיה'}.`;
+  } else if (kind === 'strike' || kind === 'missile' || kind === 'launch' || kind === 'drone') {
     const w = kind === 'drone' ? 'כטב״ם' : /בליסט/.test(blob) ? 'טיל בליסטי' : 'טיל';
     const toward = loc && loc !== 'תימן' ? ` לעבר ${loc}` : '';
-    summary = `דווח על שיגור ${w}${toward}.`;
+    summary = `שיגור ${w}${toward}.`;
     text = `לפי ${src}: ${summary}`;
   } else if (kind === 'combat' || kind === 'clash' || kind === 'capture') {
-    summary = `לחימה ב${loc}.`;
-    text = `לפי ${src}: מדווח על לחימה קרקעית ב${loc}.`;
+    summary = `עימותים בין החות׳ים לכוחות ממשלתיים ב${loc}.`;
+    text = `לפי ${src}: ${summary}`;
   } else if (kind === 'port') {
     summary = `פגיעה בנמל ב${loc}.`;
-    text = `לפי ${src}: דיווח על פגיעה בנמל ב${loc}.`;
+    text = `לפי ${src}: ${summary}`;
   } else if (kind === 'vessel') {
-    summary = `תקרית ימית${where ? ' מול ' + loc : ' מול תימן'}.`;
-    text = `לפי ${src}: דיווח על תקרית בכלי שיט.`;
+    summary = `תקרית ימית${where ? ' מול ' + loc : ' בים האדום'}.`;
+    text = `לפי ${src}: ${summary}`;
   } else {
     summary = where ? `עדכון מ${loc}.` : 'עדכון על תימן, בלי פירוט קינטי.';
     text = `לפי ${src}: ידיעה${where ? ' מ' + loc : ' על תימן'}.`;
@@ -1163,7 +1195,7 @@ function reportTeaser(r) {
   }
   if (custom && String(custom).trim().length >= 12 && !hasArabicScript(custom)) {
     const t = String(custom).trim();
-    const alreadyPlaced = /במרחב|במרחבי|בחזית|בנמל|באי /.test(t);
+    const alreadyPlaced = /במרחב|במרחבי|בחזית|בנמל|באי |^התרעות |^עימותים |^שיגור |^תקיפה |^הופל |^השתלטות /.test(t);
     return rtlOrgLead(tidyHebrewProse(stripDeskCaveat(alreadyPlaced ? t : annotatePlaces(t))));
   }
   if (hasArabicScript(custom) || hasArabicScript(r && r.text)) {
@@ -1410,12 +1442,25 @@ async function fetchData() {
 
 function applyLiveOverlay(base) {
   if (!base) return base;
-  const have = new Set((base.reports || []).map(r => (r.fp || '') + '|' + (r.url || '')));
+  const canon = (u) => String(u || '').split('?')[0].replace(/\/$/, '').toLowerCase();
+  const haveUrl = new Set((base.reports || []).map(r => canon(r.url)));
+  const haveStory = new Set((base.reports || []).map(r => feedClusterKey(r)));
+  const haveHead = new Set((base.reports || []).map(r => {
+    const ymd = jerusalemYmd(reportTime(r)) || String(r.at || '').slice(0, 10);
+    return ymd + '|' + stripNikud(r.summary || '').replace(/\s+/g, ' ').slice(0, 80);
+  }));
   const extra = (liveOverlay.reports || []).filter(r => {
     if (!r || !r.url) return false;
-    const k = (r.fp || '') + '|' + (r.url || '');
-    if (have.has(k) || have.has('|' + r.url)) return false;
-    have.add(k); have.add('|' + r.url);
+    const u = canon(r.url);
+    if (haveUrl.has(u)) return false;
+    const sk = feedClusterKey(r);
+    if (haveStory.has(sk)) return false;
+    const ymd = jerusalemYmd(reportTime(r)) || String(r.at || '').slice(0, 10);
+    const hk = ymd + '|' + stripNikud(r.summary || '').replace(/\s+/g, ' ').slice(0, 80);
+    if (haveHead.has(hk)) return false;
+    haveUrl.add(u);
+    haveStory.add(sk);
+    haveHead.add(hk);
     return true;
   }).map(r => {
     if (!hasArabicScript(r.summary) && !hasArabicScript(r.text)) return r;
@@ -1448,6 +1493,7 @@ function isJunkLive(r) {
   if (/עצרות/.test(s) && !/ירי|תקיפה|הרוג|טיל/.test(s)) return true;
   if (/«\s*»/.test(s) || /^[:\s«»]/.test(s)) return true;
   if ((s.match(/חות׳ים/g) || []).length >= 3) return true;
+  if (/^עימותים בין.{0,80}בתימן\.?$/.test(s)) return true;
   return false;
 }
 
@@ -1457,9 +1503,9 @@ function ingestLivePayload(live) {
   liveOverlay.sourcesOk = live.sourcesOk || 0;
   liveOverlay.sourcesTried = live.sourcesTried || 0;
   const incoming = Array.isArray(live.reports) ? live.reports : [];
-  const have = new Set((liveOverlay.reports || []).map(r => r.url));
+  const have = new Set((liveOverlay.reports || []).map(r => String(r.url || '').split('?')[0]));
   incoming.forEach(r => {
-    if (r && r.url && !have.has(r.url)) {
+    if (r && r.url && !have.has(String(r.url).split('?')[0])) {
       if (hasArabicScript(r.summary) || hasArabicScript(r.text)) {
         const he = hebrewFallbackReport(r);
         r = { ...r, summary: he.summary, text: he.text };
@@ -1467,7 +1513,7 @@ function ingestLivePayload(live) {
       if (isJunkLive(r)) return;
       r = { ...r, summary: stripDeskCaveat(r.summary), text: stripDeskCaveat(r.text) };
       liveOverlay.reports.push(r);
-      have.add(r.url);
+      have.add(String(r.url).split('?')[0]);
     }
   });
   liveOverlay.reports = (liveOverlay.reports || []).filter(r => !isJunkLive(r));
@@ -1581,10 +1627,20 @@ function stripNikud(s) {
 
 function feedClusterKey(r) {
   const s = stripNikud(`${r.place || ''} ${r.summary || ''} ${r.text || ''}`);
-  const ymd = jerusalemYmd(reportTime(r)) || String(r.at || '').slice(0, 10);
+  const ts = reportTime(r);
+  let ymd = jerusalemYmd(ts) || String(r.at || '').slice(0, 10);
   const t = String(r.type || 'x').toLowerCase();
   let b = 'other';
-  if (/כהבוב|באב אלמנדב|מיון|דובאב/.test(s)) b = 'bab';
+  if (/מזהיר משפחות|אזהרה למשפחות/.test(s)) b = 'giants-warn';
+  else if (/התרעות|صفارات|صافرات/.test(s)) {
+    b = 'ksa-alert';
+    const hour = parseInt(String(ts || r.at || '').slice(11, 13), 10);
+    if (Number.isFinite(hour) && hour < 5) {
+      const d = Date.parse(ts);
+      if (Number.isFinite(d)) ymd = jerusalemYmd(d - 5 * 3600 * 1000) || ymd;
+    }
+  }
+  else if (/כהבוב|באב אלמנדב|מיון|דובאב/.test(s)) b = 'bab';
   else if (/אלואזעיה|אלצריפה|שרירה|אלעלקמה/.test(s)) b = 'waziyah';
   else if (/מאריב|ואדי דנה|ואדי עבידה/.test(s)) b = 'marib';
   else if (/אלגוף|אלחזם/.test(s)) b = 'jawf';
@@ -1592,7 +1648,7 @@ function feedClusterKey(r) {
   else if (/אלחודיידה|אלחוחה/.test(s)) b = 'hudaydah';
   else if (/ינבוע|נפט|סואץ|ארמקו/.test(s) || t === 'economy') b = 'energy';
   else if (/צנעא/.test(s)) b = 'sanaa';
-  if (t === 'combat' || t === 'strike' || t === 'economy') return ymd + '|' + t + '|' + b;
+  if (t === 'combat' || t === 'strike' || t === 'economy' || b === 'giants-warn' || b === 'ksa-alert') return ymd + '|' + t + '|' + b;
   return (r.fp || r.url || s.slice(0, 40));
 }
 
@@ -1602,19 +1658,39 @@ function sortedReports(d) {
     .filter(r => !/israel|jpost|haaretz|ynet|walla\.co|israelnationalnews|timesofisrael/i.test((r.source || '') + ' ' + (r.url || '')))
     .sort((a, b) => new Date(reportTime(b)) - new Date(reportTime(a)));
   const seen = new Map();
+  const seenUrl = new Set();
+  const seenHead = new Set();
   const out = [];
+  const canon = (u) => String(u || '').split('?')[0].replace(/\/$/, '').toLowerCase();
+  const score = (x) => String(x.summary || '').length + (String(x.summary).match(/\d/g) || []).length * 10;
   for (const r of raw) {
+    const u = canon(r.url);
+    if (u && seenUrl.has(u)) continue;
+    const ymd = jerusalemYmd(reportTime(r)) || String(r.at || '').slice(0, 10);
+    const hk = ymd + '|' + stripNikud(r.summary || '').replace(/\s+/g, ' ').slice(0, 80);
+    if (seenHead.has(hk)) continue;
     const k = feedClusterKey(r);
     const prev = seen.get(k);
-    if (!prev) { seen.set(k, r); out.push(r); continue; }
-    // Same front, same day, same type — keep the richer item, drop the ticker repeat
-    const score = (x) => String(x.summary || '').length + (String(x.summary).match(/\d/g) || []).length * 10;
+    if (!prev) {
+      seen.set(k, r);
+      if (u) seenUrl.add(u);
+      seenHead.add(hk);
+      out.push(r);
+      continue;
+    }
     if (score(r) > score(prev) + 12) {
       const i = out.indexOf(prev);
       if (i >= 0) out[i] = r;
       seen.set(k, r);
     }
+    if (u) seenUrl.add(u);
+    seenHead.add(hk);
   }
+  out.sort((a, b) => {
+    const tb = Date.parse(reportTime(b)) || 0;
+    const ta = Date.parse(reportTime(a)) || 0;
+    return tb - ta;
+  });
   return out;
 }
 
@@ -1641,7 +1717,7 @@ function renderFeed(d) {
     const confSrc = r.live ? '' : confidenceSourcesHtml(r);
     return `<article class="card lean-${lean}${worthExpand ? ' expandable' : ''}${isOpen ? ' open' : ''}" data-i="${i}" data-fp="${escapeHtml(fp)}" title="${escapeHtml(LEAN_LABEL[lean] || '')}"${worthExpand ? ' role="button" tabindex="0" aria-expanded="' + (isOpen ? 'true' : 'false') + '"' : ''}>
       <div class="meta">
-        <time datetime="${escapeHtml(ts)}">${escapeHtml(fmtStamp(ts))}</time>
+        <time datetime="${escapeHtml(ts)}" dir="ltr">${escapeHtml(fmtStamp(ts))}</time>
         <span class="src-wrap">${srcHtml}</span>
       </div>
       <p class="headline">${escapeHtml(sum)}</p>
@@ -2358,9 +2434,10 @@ function renderEvents(d) {
     drawControlOverlays(activeEpoch);
     const chip = document.getElementById('map-chip');
     if (chip && !chip.classList.contains('chip-hl')) {
-      const lab = (activeEpoch && activeEpoch.labelHe) ? activeEpoch.labelHe : '';
-      const dt = (activeEpoch && activeEpoch.at) ? activeEpoch.at.slice(8,10) + '.' + activeEpoch.at.slice(5,7) + '.' + activeEpoch.at.slice(0,4) : '';
-      chip.textContent = lab ? `שליטה ב־${dt} · ${lab}` : 'ציר שליטה — בלי סיכות אירועים';
+      const dt = activeControlYmd
+        ? activeControlYmd.slice(8,10) + '.' + activeControlYmd.slice(5,7) + '.' + activeControlYmd.slice(0,4)
+        : ((activeEpoch && activeEpoch.at) ? activeEpoch.at.slice(8,10) + '.' + activeEpoch.at.slice(5,7) + '.' + activeEpoch.at.slice(0,4) : '');
+      chip.textContent = dt ? `שליטה ב־${dt}` : 'ציר שליטה — בלי סיכות אירועים';
     }
     return;
   }
@@ -2681,20 +2758,35 @@ function clearControlOverlays() {
 function drawControlOverlays(epoch) {
   clearControlOverlays();
   if (!map || !window.L || !epoch) return;
-  (epoch.cities || []).forEach(c => {
-    if (c.lat == null || c.lng == null) return;
-    const col = COLORS[c.control] || COLORS.contested;
-    const m = L.circleMarker([c.lat, c.lng], {
-      radius: 10,
-      color: '#f8fafc',
-      weight: 1.6,
+  const byId = {};
+  (epoch.cities || []).forEach(c => { if (c && c.id) byId[c.id] = c.control; });
+  COAST_AREAS.forEach(area => {
+    const ctrl = byId[area.id];
+    if (!ctrl) return;
+    const col = COLORS[ctrl] || COLORS.contested;
+    const poly = L.polygon(area.ring, {
+      color: '#0b0f14',
+      weight: 1.1,
       fillColor: col,
-      fillOpacity: 0.9,
-      pane: 'islands'
-    }).bindPopup(`<strong>${escapeHtml(c.nameHe || '')}</strong><br/>שליטה: ${LABELS[c.control] || c.control}`);
-    m.addTo(map);
-    controlOverlayLayers.push(m);
+      fillOpacity: 0.7,
+      pane: 'islands',
+      interactive: true
+    }).bindPopup(`<strong>${escapeHtml(area.nameHe)}</strong><br/>שליטה: ${LABELS[ctrl] || ctrl}`);
+    poly.addTo(map);
+    controlOverlayLayers.push(poly);
   });
+}
+
+function conflictDays() {
+  const out = [];
+  const start = Date.parse(CONFLICT_START + 'T12:00:00+03:00');
+  const end = Date.parse(todayYmd() + 'T12:00:00+03:00');
+  if (!Number.isFinite(start) || !Number.isFinite(end)) return [CONFLICT_START];
+  for (let t = start; t <= end + 3600000; t += 86400000) {
+    const y = jerusalemYmd(t);
+    if (y && (!out.length || out[out.length - 1] !== y) && y <= todayYmd()) out.push(y);
+  }
+  return out;
 }
 
 function epochForDate(ymd) {
@@ -2707,20 +2799,21 @@ function epochForDate(ymd) {
   return pick;
 }
 
-function setControlEpochByIndex(i) {
-  const epochs = ((data && data.controlEpochs) || []).slice().sort((a, b) => String(a.at).localeCompare(String(b.at)));
-  if (!epochs.length) return;
-  const idx = Math.max(0, Math.min(epochs.length - 1, Number(i) || 0));
-  activeEpoch = epochs[idx];
+function setControlDayByIndex(i) {
+  const days = conflictDays();
+  if (!days.length) return;
+  const idx = Math.max(0, Math.min(days.length - 1, Number(i) || 0));
+  activeControlYmd = days[idx];
+  activeEpoch = epochForDate(activeControlYmd);
   mapMode = 'control';
   try { document.body.classList.add('ctrl-mode'); } catch (e) {}
   ['combat', 'strike', 'vessel', 'port', 'statement'].forEach((k) => { layersOn[k] = false; });
   try { if (data) renderLegend(data); } catch (e) {}
   const lab = document.getElementById('ctrl-slider-label');
-  if (lab && activeEpoch) {
-    const at = String(activeEpoch.at).slice(0, 10);
-    const [y, m, dd] = at.split('-');
-    lab.textContent = `${dd}.${m} · ${activeEpoch.labelHe || ''}`;
+  if (lab && activeControlYmd) {
+    const [y, m, dd] = activeControlYmd.split('-');
+    const ep = activeEpoch && String(activeEpoch.at).slice(0, 10) === activeControlYmd ? (activeEpoch.labelHe || '') : '';
+    lab.textContent = ep ? `${dd}.${m}.${y} · ${ep}` : `${dd}.${m}.${y}`;
   }
   const sl = document.getElementById('ctrl-slider');
   if (sl) sl.value = String(idx);
@@ -2882,6 +2975,7 @@ function enterDayMode(ymd) {
   mapMode = 'day';
   mapDate = clampMapDate(ymd || todayYmd());
   activeEpoch = null;
+  activeControlYmd = null;
   try { document.body.classList.remove('ctrl-mode'); } catch (e) {}
   clearControlOverlays();
 }
@@ -2951,38 +3045,13 @@ function wireUi(d) {
   };
   const fromInp = document.getElementById('map-from');
   const toInp = document.getElementById('map-to');
-  const applyRange = () => {
-    const today = todayYmd();
-    let a = clampMapDate(fromInp && fromInp.value ? fromInp.value : CONFLICT_START);
-    let b = clampMapDate(toInp && toInp.value ? toInp.value : today);
-    if (a < CONFLICT_START) a = CONFLICT_START;
-    if (a > b) { const t = a; a = b; b = t; }
-    mapDateFrom = a;
-    mapDateTo = b;
-    mapMode = 'range';
-    activeEpoch = null;
-    try { document.body.classList.remove('ctrl-mode'); } catch (e) {}
-    clearControlOverlays();
-    if (fromInp) fromInp.value = a;
-    if (toInp) toInp.value = b;
-    markDayBtn('btn-range-apply');
-    syncDayNav();
-    applyMapFilters();
-  };
-  if (fromInp) {
-    fromInp.min = CONFLICT_START;
-    fromInp.max = todayYmd();
-    if (!fromInp.value) fromInp.value = CONFLICT_START;
-    fromInp.onchange = applyRange;
-  }
-  if (toInp) {
-    toInp.min = CONFLICT_START;
-    toInp.max = todayYmd();
-    if (!toInp.value) toInp.value = todayYmd();
-    toInp.onchange = applyRange;
-  }
+  if (fromInp) fromInp.hidden = true;
+  if (toInp) toInp.hidden = true;
   const rangeBtn = document.getElementById('btn-range-apply');
-  if (rangeBtn) rangeBtn.onclick = (ev) => { if (ev) ev.preventDefault(); applyRange(); };
+  if (rangeBtn) rangeBtn.hidden = true;
+  document.querySelectorAll('.tf-to, .time-filter .tf-label').forEach(el => {
+    if (el && el.textContent && /^מ־$/.test(el.textContent.trim())) el.hidden = true;
+  });
   const allBtn = document.getElementById('btn-conflict-all');
   if (allBtn) allBtn.onclick = (ev) => {
     if (ev) ev.preventDefault();
@@ -2990,29 +3059,28 @@ function wireUi(d) {
     mapDateFrom = CONFLICT_START;
     mapDateTo = todayYmd();
     activeEpoch = null;
+    activeControlYmd = null;
     try { document.body.classList.remove('ctrl-mode'); } catch (e) {}
     clearControlOverlays();
-    if (fromInp) fromInp.value = CONFLICT_START;
-    if (toInp) toInp.value = todayYmd();
     markDayBtn('btn-conflict-all');
     syncDayNav();
     applyMapFilters();
   };
   const slider = document.getElementById('ctrl-slider');
-  const epochs = ((d && d.controlEpochs) || []).slice().sort((a, b) => String(a.at).localeCompare(String(b.at)));
+  const days = conflictDays();
   if (slider) {
     slider.min = '0';
-    slider.max = String(Math.max(0, epochs.length - 1));
-    slider.value = String(Math.max(0, epochs.length - 1));
+    slider.max = String(Math.max(0, days.length - 1));
+    slider.value = String(Math.max(0, days.length - 1));
+    slider.step = '1';
     const lab = document.getElementById('ctrl-slider-label');
-    if (lab && epochs.length) {
-      const last = epochs[epochs.length - 1];
-      const at = String(last.at).slice(0, 10);
-      const [y, m, dd] = at.split('-');
-      lab.textContent = `${dd}.${m} · ${last.labelHe || ''}`;
+    if (lab && days.length) {
+      const last = days[days.length - 1];
+      const [y, m, dd] = last.split('-');
+      lab.textContent = `${dd}.${m}.${y}`;
     }
-    slider.oninput = () => setControlEpochByIndex(slider.value);
-    slider.onchange = () => setControlEpochByIndex(slider.value);
+    slider.oninput = () => setControlDayByIndex(slider.value);
+    slider.onchange = () => setControlDayByIndex(slider.value);
   }
   syncDayNav();
   document.getElementById('btn-more-reports').onclick = () => {

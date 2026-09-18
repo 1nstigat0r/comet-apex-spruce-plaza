@@ -22,9 +22,9 @@ export const Route = createRootRoute({
         href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;500;600;700&display=swap",
       },
       { rel: "stylesheet", href: "/vendor/leaflet/leaflet.css" },
-      { rel: "stylesheet", href: "/desk.css?v=desk-19sep-a" },
+      { rel: "stylesheet", href: "/desk.css?v=desk-19sep-e" },
       { rel: "preload", href: "/vendor/leaflet/leaflet.js", as: "script" },
-      { rel: "preload", href: "/app.js?v=desk-19sep-a", as: "script" },
+      { rel: "preload", href: "/app.js?v=desk-19sep-e", as: "script" },
       { rel: "preload", href: "/data.json", as: "fetch", crossOrigin: "anonymous" },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
@@ -45,7 +45,7 @@ function RootDocument() {
           <Outlet />
         </AuthProvider>
         <script id="leaflet-js" src="/vendor/leaflet/leaflet.js" />
-        <script id="yemen-app-js" src="/app.js?v=desk-19sep-a" />
+        <script id="yemen-app-js" src="/app.js?v=desk-19sep-e" />
         <Scripts />
       </body>
     </html>

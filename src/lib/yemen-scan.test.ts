@@ -25,4 +25,52 @@ test("Giants brigades clash is Hebrew and not a ticker clone", () => {
   assert.doesNotMatch(d.summary, /להחות/);
   assert.doesNotMatch(d.summary, /אלעמאליק/);
   assert.equal(d.type, "combat");
+  assert.match(d.summary, /^עימותים בין/);
+});
+
+test("Giants family warning is a statement, not word salad", () => {
+  const d = heDigest(
+    "Almashhad",
+    "قيادي بارز في العمالقة يوجه تحذيرًا أخيرًا للأسر اليمنية بشأن أبنائها في صفوف الحوثيين في عدن",
+    "",
+  );
+  assert.match(d.summary, /מזהיר/);
+  assert.match(d.summary, /חטיבות הענקים/);
+  assert.doesNotMatch(d.summary, /חטיבות הענקים חות׳ים חטיבות/);
+  assert.equal(d.type, "statement");
+});
+
+test("word-salad giants headline is rejected", () => {
+  const d = heDigest("Almashhad", "العمالقة الحوثيين العمالقة عدن العمالقة", "");
+  assert.equal(d.summary, "");
+});
+
+test("Saudi sirens become one flash", () => {
+  const d = heDigest(
+    "Al Hadath",
+    "دوي صافرات الإنذار المبكر في جدة والطائف وينبع وخميس مشيط وأبها وجازان",
+    "gov",
+  );
+  assert.match(d.summary, /התרעות/);
+  assert.match(d.summary, /גִ׳דַּה/);
+  assert.doesNotMatch(d.summary, /^דווח על/);
+  assert.equal(d.type, "strike");
+});
+
+test("Jeddah and Taif sirens without Jazan still flash", () => {
+  const d = heDigest(
+    "SPA",
+    "دوي صفارات الإنذار في جدة والطائف",
+    "gov",
+  );
+  assert.match(d.summary, /^התרעות/);
+  assert.match(d.summary, /גִ׳דַּה/);
+  assert.match(d.summary, /טאיף/);
+  assert.equal(d.type, "strike");
+});
+
+test("airstrike flash has no דווח על prefix", () => {
+  const d = heDigest("Alsahwa", "غارات جوية على مواقع الحوثيين في الوازعية وتعز", "");
+  assert.match(d.summary, /^תקיפה אווירית/);
+  assert.doesNotMatch(d.summary, /דווח על/);
 });

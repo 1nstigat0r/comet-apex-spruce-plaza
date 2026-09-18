@@ -7,8 +7,8 @@
       "status": 200,
       "title": "דסק מלחמה — תימן",
       "hasCanvas": false,
-      "bodyTextLen": 272,
-      "bodyTextHash": "8ad4272f511c6b2e8ffbb10397c4fca7d7008a06139642cd71dac76c4ff639bd",
+      "bodyTextLen": 246,
+      "bodyTextHash": "323b1496e874b3a195f7670ededde15c72bc89094b8870ecb3f440e937603a92",
       "bodyTextPrefix": "דסק מלחמה — תימן מבוסס על מודיעין גלוי מתחבר… יום במפה: אחורה → ",
       "horizontalOverflow": false,
       "consoleErrors": [],
@@ -21,8 +21,8 @@
       "status": 200,
       "title": "דסק מלחמה — תימן",
       "hasCanvas": false,
-      "bodyTextLen": 272,
-      "bodyTextHash": "8ad4272f511c6b2e8ffbb10397c4fca7d7008a06139642cd71dac76c4ff639bd",
+      "bodyTextLen": 246,
+      "bodyTextHash": "323b1496e874b3a195f7670ededde15c72bc89094b8870ecb3f440e937603a92",
       "bodyTextPrefix": "דסק מלחמה — תימן מבוסס על מודיעין גלוי מתחבר… יום במפה: אחורה → ",
       "horizontalOverflow": false,
       "consoleErrors": [],
@@ -35,6 +35,7 @@
   "verdictFile": "/workspace/screenshots/app-builder-built.json",
   "divergesFromBaseline": true,
   "baselineReasons": [
-    "desktop: body text collapsed (4828 -> 272 chars)"
+    "desktop: body text collapsed (4445 -> 246 chars)",
+    "mobile: body text collapsed (4445 -> 246 chars)"
   ]
 }

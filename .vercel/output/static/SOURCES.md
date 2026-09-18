@@ -1,5 +1,64 @@
 # Yemen desk — OSINT source pool (no Israeli sources)
 
+**Scan cadence (every run, ~5 minutes):**
+- The desk hits `/api/scan` every 5 minutes. Server cache is 4 minutes, so a new pull starts each cycle.
+- **Every cycle:** all Telegram channels (75) + all RSS feeds (43).
+- **X / Twitter:** 36 priority accounts every cycle; the remaining 109 rotate in chunks of 50 (full rest-catalog in about 15 minutes).
+- Total catalog: **263 endpoints** (TG + RSS + unique X). Overlapping names across TG/X/RSS are the same outlet on different pipes.
+- Rule: never name a source without an article/post URL. If the link cannot be opened, the source is not used.
+
+---
+
+## A. Sources the operator named (this conversation)
+
+Used exactly as given; they sit in the **priority** X batch and/or the always-on TG/RSS pool.
+
+### Telegram (Iraqi / axis + Arab desks)
+- Ali Bk — `@Alibk3`
+- Sabereen News — `@SabrenNews22`
+- Sabereen Plus — `@Sabren_News1`
+- Naya Sabereen — `@naya_saberin`
+- Al-Mihwar — `@Alomhoar`
+- Al-Masirah — `@almasirah`
+- Al Hadath / Al Arabiya al-Hadath — `@alhadath`, `@AlArabiya_alhadath`, `@AlHadath_Brk`, `@AlArabiya`, `@AlArabiya_Brk`
+- Al Jazeera — `@AlJazeera`
+
+### X (named handles)
+- `@tmrrah9` Tmrrah
+- `@alrougui` Al-Rougui
+- `@modgovksa` Saudi MoD
+- `@Osint613` OSINT613
+- `@ly83764` LY OSINT
+- `@SaudiArabitcr4` Saudi Arabia Tracker
+- `@al_ghandri` Al-Ghandri
+- `@Alsakaniali` Ali Al-Sakani
+- `@FaresALhemyari` Fares al-Hemyari
+
+### Wires / press the operator named
+- Reuters, WSJ, Washington Post, NYT, NY Post, BBC, CBS
+- Al-Araby Al-Jadeed, Asharq Al-Awsat, Erem News, Al-Akhbar, Alhurra, Arab News
+
+---
+
+## B. Sources the desk added on its own
+
+Same cadence as above. English display names in the feed.
+
+### Telegram (added)
+Hazam al-Asad, Yahya Saree, YPA, Al-Mayadeen, Asharq News, Barran Press, Crater Sky, South24, Baghdad Today, Rapid Response, AP, Al Qahera News, Al-Mamlaka, Mohammed Abdulsalam, Mohammed Ali al-Houthi, Ansarollah, Saba, Erem News, SPA, Saudi News 50, Sabq, Al Ekhbariya, Okaz, Almashhad, Aden Time, Al-Mahrah News, Al-Masdar Online, Aden al-Ghad, Al-Janoob Alyoum, Yemen Monitor, Sky News Arabia, Marib Press, Taiz Online, Aden Alyoum, Al-Omnaa, Nation Shield, Giants Brigades, Sheba Intelligence, Iraqi News, Shafaq News, Al-Manar, Saudi Civil Defense, NCEC, Khbr Press, Yemen Future, Mokha News, Basha Report, Al Jazeera Breaking, Reuters Arabic, AFP, Al Hadath Yemen, 26 September, Yemen Shabab, Al-Mahrah Post, Arab News.
+
+### X (added — priority always-on, plus rotating rest)
+**Also always-on (priority, not named by the operator):** `@AlqadyMyr49009`, `@spagov`, `@SaudiDCD`, `@ncec_ksa`, `@KSAcivildfnse`, `@Yahya_Saree`, `@hezamalasad`, `@abdulqadermortd`, `@CENTCOM`, `@UKMTO`, `@AlMashhadNews`, `@AlHadath`, `@AlArabiya`, `@Reuters`, `@AFP`, `@AJArabic`, `@AJABreaking`, `@shebaintelligen`, `@BashaReport`, `@MenchOsint`, `@South24net`, `@AlMasirahTV`, `@YPA_agency`, `@Moh_Alhouthi`, `@AlArabiya_Brk`, `@sabqorg`, `@okaz_online`.
+
+**Rotating (~50 per cycle):** SPA, KSAMOFA, Saudi News 50, Al Ekhbariya, Asharq Al-Awsat, Al-Watan, Al Riyadh, Saudi Gazette, Arab News, Sky News Arabia, Ansarollah, Erem News, Al-Araby, Al-Mayadeen, Al Qahera News, Baghdad Today, Mokha News, Taiz News, Marib News, Crater Sky, Barran Press, Alsahwa, Yemen Monitor, Conflicts, Sentdefender, Calibre Obscura, Intel Crab, OSINTtechnical, ISW, Abdulsalam Mohammed, Nasser Arrabyee, Hisham Al-Omeisy, Afrah Nasser, Iona Craig, Farea al-Muslimi, Maged al-Madhaji, Aden al-Ghad, Al-Masdar Online, Al-Janoob Alyoum, TankerTrackers, gCaptain, US 5th Fleet, Gerjon, ELINT News, Archer83Able, IMINT Analyst, Intel Sky, War Mapper, Aurora Intel, GeoConfirmed, Oryx, Dryad Global, Ambrey, Lloyd's List, Alhurra, Al-Monitor, Middle East Eye, The National, Anadolu, France 24, BBC, AP, Al Jazeera EN, AFP Arabic, Bloomberg, CNN, Fox News, CNBC, Politico, Marib Press, Taiz Online, Aden Alyoum, Khbr Press, Yemen Future, Nation Shield, Giants Brigades, Nabil Shamsan, Shafaq, CMF, Sana'a Center, Crisis Group, ACLED, ReliefWeb, OCHA, IRNA, Yemen Shabab, Al-Mahrah Post, Adnan al-Gabarni, Abaad Studies, OSINT Defender, VCDGF, Detresfa, Makkah Newspaper, Guardian, TradeWinds, EUNAVFOR, NAVCENT.
+
+### RSS (added)
+Almashhad, Yemen Monitor, Alsahwa, YPA, Aden Observer, Yemenat, Al Jazeera EN/AR, BBC ME, Guardian Yemen, France 24, Anadolu, Arab News, Al-Monitor, The National, Middle East Eye, Politico, plus Google News queries for Fox, Al-Araby, Al-Akhbar, Asharq Al-Awsat, Alhurra, Erem, Okaz, Al-Watan, Reuters, WSJ, WaPo, NYT, NY Post, CBS, CNN, Bloomberg, Al Arabiya, Al Hadath, Saudi sirens, X sirens, X Yemen, energy/shipping/US-politics slices.
+
+**Hard exclusion:** no Israeli sources (Ynet, IDF, Abu Ali Express, etc.).
+
+---
+
 Use this list on every scan. Prefer primary / field reporting; cross-check; English display names in the desk.
 
 ## Yemeni / local (all sides, independent + aligned)
