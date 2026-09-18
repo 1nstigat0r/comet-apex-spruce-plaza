@@ -7,9 +7,9 @@
       "status": 200,
       "title": "דסק מלחמה — תימן",
       "hasCanvas": false,
-      "bodyTextLen": 4815,
-      "bodyTextHash": "39ec64d2cb91a5654101be26b81c1374cfef9e4720a284464efae4d65ea7bb47",
-      "bodyTextPrefix": "דסק מלחמה — תימן מבוסס על מודיעין גלוי עודכן 16:52 · לפני 964 שנ",
+      "bodyTextLen": 272,
+      "bodyTextHash": "8ad4272f511c6b2e8ffbb10397c4fca7d7008a06139642cd71dac76c4ff639bd",
+      "bodyTextPrefix": "דסק מלחמה — תימן מבוסס על מודיעין גלוי מתחבר… יום במפה: אחורה → ",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
@@ -21,9 +21,9 @@
       "status": 200,
       "title": "דסק מלחמה — תימן",
       "hasCanvas": false,
-      "bodyTextLen": 4815,
-      "bodyTextHash": "ccc455a2b135e7bca4abf4d241852eb812e92881476ed22396aa7c956abafc42",
-      "bodyTextPrefix": "דסק מלחמה — תימן מבוסס על מודיעין גלוי עודכן 16:52 · לפני 966 שנ",
+      "bodyTextLen": 272,
+      "bodyTextHash": "8ad4272f511c6b2e8ffbb10397c4fca7d7008a06139642cd71dac76c4ff639bd",
+      "bodyTextPrefix": "דסק מלחמה — תימן מבוסס על מודיעין גלוי מתחבר… יום במפה: אחורה → ",
       "horizontalOverflow": false,
       "consoleErrors": [],
       "pageErrors": [],
@@ -35,7 +35,6 @@
   "verdictFile": "/workspace/screenshots/app-builder-built.json",
   "divergesFromBaseline": true,
   "baselineReasons": [
-    "desktop: body text replaced (similar length, page start changed)",
-    "mobile: body text replaced (similar length, page start changed)"
+    "desktop: body text collapsed (4828 -> 272 chars)"
   ]
 }

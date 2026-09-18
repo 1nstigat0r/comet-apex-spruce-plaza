@@ -35,9 +35,8 @@ Use this list on every scan. Prefer primary / field reporting; cross-check; Engl
 - Al Qahera News (القاهرة الإخبارية), Roya News (Jordan), Al-Mamlaka (Jordan)
 
 ## Iraqi / «axis» Arabic Telegram (high volume on regional war; label lean)
-- Ali Bk — @Alibk3 (Iraqi/regional aggregator; useful for Red Sea / escalation threads)
-- Shabakat Akhbar al-Mihwar — @akhbar_alme7war («شبكة أخبار المحور»)
-- Al-Mihwar News — @Alomhoar («المحور نيوز»)
+- Ali Bk — @Alibk3 (Iraqi/regional aggregator; useful for Red Sea / escalation threads). Scan every run; they often publish Yemen claims before Yemeni locals.
+- Al-Mihwar — @Alomhoar only. Do **not** use @akhbar_alme7war.
 - Sabereen News — @SabrenNews22 (+ @Sabren_News1 Sabereen Plus; @naya_saberin Naya–Sabereen)
 - Baghdad Today — @baghdadtoday (when public)
 - Iraqi News Agency (INA / واع)
@@ -68,7 +67,11 @@ Use this list on every scan. Prefer primary / field reporting; cross-check; Engl
 
 **Saudi / Gulf media:** @alhadath, @AlArabiya_alhadath, @AlArabiya_Brk, Asharq News TG when public.
 
-**Iraqi / axis Arabic:** @Alibk3, @akhbar_alme7war, @Alomhoar, @SabrenNews22, @Sabren_News1, @naya_saberin, Baghdad Today, PMF media (label).
+**Iraqi / axis Arabic:** @Alibk3, @Alomhoar, @SabrenNews22, @Sabren_News1, @naya_saberin, Baghdad Today, PMF media (label).
+
+**US / Trump (for US statements, not Yemen ground facts):** Fox News, Rapid Response 47 (@RapidResponse), Politico, AP, CNBC/WSJ when they actually quote Trump/WH on Yemen-Houthis.
+
+**Regional Arabic extras:** العربي الجديد (Al-Araby Al-Jadeed), Al-Akhbar (Lebanon, morning briefs), Asharq News, Al Qahera News, Al-Mamlaka, Middle East Eye, South24.
 
 **Regional Arabic:** Al Jazeera, العربي الجديد, Al-Akhbar, Al-Mayadeen, Al-Alam عاجل, Roya, Al-Mamlaka.
 
@@ -88,8 +91,8 @@ Use this list on every scan. Prefer primary / field reporting; cross-check; Engl
 
 ## Rules
 1. No Israeli sources ever.
-2. Attribute every claim; link the article URL when used; for Telegram cite `t.me/<handle>/…` post when possible.
-3. English canonical outlet names in the UI (Almashhad, Ali Bk, Sabereen News, Al-Mihwar News, Al Hadath…).
+2. Attribute every claim; **never name a source without an article/post URL**. If you cannot open a link, you cannot use the source — omit it.
+3. English canonical outlet names in the desk (Almashhad, Ali Bk, Sabereen News, Al-Mihwar News, Al Hadath…).
 4. Telegram/X: quote handle or channel name; prefer posts that are primary, not pure reposts.
 5. Rotate: each scan should hit wires + at least 2 Yemeni locals + Telegram from the priority pool (not only Almashhad).
 6. Iraqi/Iranian TG are **leads and claims** — chase Yemeni primary or wire confirmation for ground control / casualties when possible.
