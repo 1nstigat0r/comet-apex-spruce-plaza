@@ -97,6 +97,9 @@ const TG: Channel[] = [
   { id: "YemenShababNet", name: "Yemen Shabab", lean: "houthi" },
   { id: "AlMahrahPost", name: "Al-Mahrah Post", lean: "south" },
   { id: "ArabNews", name: "Arab News", lean: "gov" },
+  { id: "army21ye", name: "Yahya Saree", lean: "houthi" },
+  { id: "althawrah", name: "Al-Thawrah", lean: "houthi" },
+  { id: "alkhabaralyemeni", name: "Al-Khabar al-Yemeni", lean: "houthi" },
 ];
 
 const X_USERS: { handle: string; name: string; lean: Channel["lean"] }[] = [
@@ -245,6 +248,15 @@ const X_USERS: { handle: string; name: string; lean: Channel["lean"] }[] = [
   { handle: "TradeWindsNews", name: "TradeWinds", lean: "intl" },
   { handle: "EUNAVFOR", name: "EUNAVFOR", lean: "intl" },
   { handle: "NAVYCENT", name: "NAVCENT", lean: "intl" },
+  { handle: "Jamal_Atamimi", name: "Jamal Atamimi", lean: "gov" },
+  { handle: "YemenFutureNet", name: "Yemen Future", lean: "intl" },
+  { handle: "althawrahye", name: "Al-Thawrah", lean: "houthi" },
+  { handle: "alkhabaralyemeni", name: "Al-Khabar al-Yemeni", lean: "houthi" },
+  { handle: "turkiyetoday", name: "Türkiye Today", lean: "intl" },
+  { handle: "independentar", name: "Independent Arabia", lean: "intl" },
+  { handle: "CNNArabic", name: "CNN", lean: "intl" },
+  { handle: "SaudiGazette", name: "Saudi Gazette", lean: "gov" },
+  { handle: "AjelNews", name: "Ajel", lean: "gov" },
 ];
 
 const X_PRIORITY = new Set(
@@ -256,6 +268,7 @@ const X_PRIORITY = new Set(
     "AlHadath", "AlArabiya", "Reuters", "AFP", "AJArabic", "AJABreaking",
     "shebaintelligen", "BashaReport", "MenchOsint", "South24net", "AlMasirahTV",
     "YPA_agency", "Moh_Alhouthi", "AlArabiya_Brk", "sabqorg", "okaz_online",
+    "AlAkhbarNews", "AlArabyTV", "aawsat_News", "Jamal_Atamimi", "YemenFutureNet",
   ].map((s) => s.toLowerCase()),
 );
 
@@ -332,10 +345,24 @@ const RSS: RssFeed[] = [
   { url: "https://news.google.com/rss/search?q=%D8%B5%D9%81%D8%A7%D8%B1%D8%A7%D8%AA+%D8%A7%D9%84%D8%A5%D9%86%D8%B0%D8%A7%D8%B1+(%D8%AC%D8%AF%D8%A9+OR+%D8%A7%D9%84%D8%B7%D8%A7%D8%A6%D9%81+OR+%D9%8A%D9%86%D8%A8%D8%B9+OR+%D8%AC%D8%A7%D8%B2%D8%A7%D9%86)+when:1d&hl=ar&gl=SA&ceid=SA:ar", name: "Saudi alerts" },
   { url: "https://news.google.com/rss/search?q=site:x.com+(%D8%B5%D9%81%D8%A7%D8%B1%D8%A7%D8%AA+%D8%A7%D9%84%D8%A5%D9%86%D8%B0%D8%A7%D8%B1)+when:1d&hl=ar&gl=SA&ceid=SA:ar", name: "X sirens" },
   { url: "https://news.google.com/rss/search?q=site:x.com+(Houthi+OR+%D8%A7%D9%84%D8%AD%D9%88%D8%AB)+(%D8%AA%D8%B9%D8%B2+OR+%D9%85%D8%A3%D8%B1%D8%A8+OR+%D8%A7%D9%84%D9%85%D8%AE%D8%A7)+when:1d&hl=ar&gl=YE&ceid=YE:ar", name: "X Yemen" },
+  { url: "https://althawrah.ye/feed", name: "Al-Thawrah" },
+  { url: "https://yemenfuture.net/feed", name: "Yemen Future" },
+  { url: "https://alkhabaralyemeni.net/feed", name: "Al-Khabar al-Yemeni" },
+  { url: "https://www.almayadeen.net/rss", name: "Al-Mayadeen" },
+  { url: "https://saudigazette.com.sa/rssFeed/1", name: "Saudi Gazette" },
+  { url: "https://news.google.com/rss/search?q=site:turkiyetoday.com+(Yemen+OR+Houthi+OR+Syria+fighters)+when:5d&hl=en-US&gl=US&ceid=US:en", name: "Türkiye Today" },
+  { url: "https://news.google.com/rss/search?q=site:arabic.cnn.com+(%D8%A7%D9%84%D9%8A%D9%85%D9%86+OR+%D8%A7%D9%84%D8%AD%D9%88%D8%AB)+when:2d&hl=ar&gl=EG&ceid=EG:ar", name: "CNN" },
+  { url: "https://news.google.com/rss/search?q=site:independentarabia.com+(%D8%A7%D9%84%D9%8A%D9%85%D9%86+OR+%D8%A7%D9%84%D8%AD%D9%88%D8%AB)+when:2d&hl=ar&gl=AE&ceid=AE:ar", name: "Independent Arabia" },
+  { url: "https://news.google.com/rss/search?q=site:alsahil.net+(%D8%B5%D9%86%D8%B9%D8%A7%D8%A1+OR+%D8%A7%D9%84%D8%AD%D9%88%D8%AB)+when:2d&hl=ar&gl=YE&ceid=YE:ar", name: "Al-Sahil" },
+  { url: "https://news.google.com/rss/search?q=site:okaz.com.sa+(%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6+OR+%D8%A7%D9%84%D8%AE%D8%B1%D8%AC+OR+%D8%A5%D9%86%D8%B0%D8%A7%D8%B1)+when:1d&hl=ar&gl=SA&ceid=SA:ar", name: "Okaz" },
+  { url: "https://news.google.com/rss/search?q=site:alarabiya.net+(%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6+OR+%D8%A7%D9%84%D8%AE%D8%B1%D8%AC)+%D8%A5%D9%86%D8%B0%D8%A7%D8%B1+when:1d&hl=ar&gl=SA&ceid=SA:ar", name: "Al Arabiya" },
+  { url: "https://news.google.com/rss/search?q=site:al-akhbar.com+(%D8%B3%D9%88%D8%B1%D9%8A%D8%A7+OR+%D8%A7%D9%84%D9%8A%D9%85%D9%86)+(%D9%85%D9%82%D8%A7%D8%AA%D9%84%D9%8A%D9%86+OR+%D8%A7%D9%84%D8%AD%D9%88%D8%AB)+when:5d&hl=ar&gl=LB&ceid=LB:ar", name: "Al-Akhbar" },
+  { url: "https://news.google.com/rss/search?q=site:alaraby.co.uk+%D8%A7%D9%84%D9%8A%D9%85%D9%86+when:1d&hl=ar&gl=GB&ceid=GB:ar", name: "Al-Araby Al-Jadeed" },
+  { url: "https://news.google.com/rss/search?q=site:aawsat.com+%D8%A7%D9%84%D9%8A%D9%85%D9%86+when:1d&hl=ar&gl=SA&ceid=SA:ar", name: "Asharq Al-Awsat" },
 ];
 
 const YEMEN_RE =
-  /yemen|houthi|sanaa|sana'a|marib|taiz|mocha|mokha|hudaydah|hodeidah|bab al-?mand|mayun|mayyun|perim|lahj|dhalea|jawf|ibb\b|red sea|suez|aramco|yanbu|brent|crude oil|tanker|shipping lane|صفارات|إنذار|انذار|صافرات|siren|اليمن|اليمني|الحوث|صنعاء|مأرب|تعز|المخا|الحديدة|باب المندب|ميون|صعدة|الجوف|الضالع|لحج|عدن|أنصار الله|قوات صنعاء|الوازعية|كحبوب|ذباب|السعود|ابن سلمان|حزام الأسد|hezamalasad|المرتضى|السكن|نפט|ארמקו|תעלת סואץ|ים סוף|ים האדום|جدة|الطائف|خميس مشيط|أبها|جازان|نجران|العلا/i;
+  /yemen|houthi|sanaa|sana'a|marib|taiz|mocha|mokha|hudaydah|hodeidah|bab al-?mand|mayun|mayyun|perim|lahj|dhalea|jawf|ibb\b|red sea|suez|aramco|yanbu|brent|crude oil|tanker|shipping lane|صفارات|إنذار|انذار|صافرات|siren|اليمن|اليمني|الحوث|صنعاء|مأرب|تعز|المخا|الحديدة|باب المندب|ميون|صعدة|الجوف|الضالع|لحج|عدن|أنصار الله|قوات صنعاء|الوازعية|كحبوب|ذباب|السعود|ابن سلمان|حزام الأسد|hezamalasad|المرتضى|السكن|نפט|ארמקו|תעלת סואץ|ים סוף|ים האדום|جدة|الطائف|خميس مشيط|أبها|جازان|نجران|العلا|الرياض|الخرج|فرسان|آزال|ظهر حمير/i;
 
 const NOT_YEMEN_ONLY =
   /هرمز|hormuz|pakistan fuel|إغلاق جميع الأسواق|ناقلات نفط عملاقة اليوم في ميناء البصرة|دير.?الزور|خيبر بباكستان|الجافورة|يونيفيل|جنوب لبنان|دير ميماس/i;
@@ -423,6 +450,15 @@ const SOURCE_HE: Record<string, string> = {
   CBS: "CBS",
   CNN: "CNN",
   Bloomberg: "בלומברג",
+  "Yemen Future": "ימן פיוצ׳ר",
+  "Al-Thawrah": "אלת׳ורה",
+  "Al-Khabar al-Yemeni": "אלח׳בר אלימני",
+  "Türkiye Today": "Türkiye Today",
+  "Saudi Gazette": "סעודי גאזט",
+  "Independent Arabia": "אינדפנדנט ערביה",
+  "Al-Sahil": "אלסאחל",
+  Ajel: "עאג׳ל",
+  "Jamal Atamimi": "ג׳מאל אלתמימי",
 };
 
 const PLACE_AR: [RegExp, string][] = [
@@ -467,6 +503,8 @@ const PLACE_AR: [RegExp, string][] = [
   [/المنصورة/g, "אלמנצורה"],
   [/البوكرة|البوكره/g, "אלבּוכרה"],
   [/كمران/g, "כמראן"],
+  [/آزال|ازال/g, "אזאל"],
+  [/ظهر حمير/g, "דַ׳הר חִמְיַר"],
 ];
 
 const PLACE_EN: [RegExp, string][] = [
@@ -502,6 +540,9 @@ const SAUDI_TARGET_AR: [RegExp, string][] = [
   [/مكة|مكه/g, "מכה"],
   [/الطائف/g, "טאיף"],
   [/شرورة/g, "שרורה"],
+  [/الخرج/g, "אלחַ׳רג׳"],
+  [/فرسان/g, "פרסאן"],
+  [/العليا/g, "עוליה"],
 ];
 
 const SAUDI_TARGET_EN: [RegExp, string][] = [
@@ -516,6 +557,9 @@ const SAUDI_TARGET_EN: [RegExp, string][] = [
   [/Mecca|Makkah/gi, "מכה"],
   [/Taif|al-?Taif/gi, "טאיף"],
   [/Sharurah/gi, "שרורה"],
+  [/Al-?Kharj/gi, "אלחַ׳רג׳"],
+  [/Farasan/gi, "פרסאן"],
+  [/Olaya/gi, "עוליה"],
 ];
 
 const PLACE_LL: Record<string, [number, number]> = {
@@ -570,6 +614,11 @@ const PLACE_LL: Record<string, [number, number]> = {
   "יַנְבּוּע": [24.0231, 38.1899],
   "שרורה": [17.48, 47.12],
   "ריאד": [24.7136, 46.6753],
+  "אלחַ׳רג׳": [24.155, 47.305],
+  "פרסאן": [16.702, 42.118],
+  "עוליה": [24.693, 46.685],
+  "אזאל": [15.409, 44.207],
+  "דַ׳הר חִמְיַר": [15.412, 44.208],
   "אבקייק": [25.933, 49.667],
   "אלביידא": [13.99, 45.57],
 };
@@ -759,7 +808,7 @@ function glossHead(text: string): string | null {
 function detectAction(text: string): Action {
   const t = text;
   if (/صفارات|صافرات|صفارة|صافرة|إنذار|انذار|air[- ]?raid siren|sirens?|دوي صفار|התרע/.test(t)
-      && (/جدة|مكة|الطائف|أبها|خميس|ينبع|جازان|نجران|العلا|جيزان|Jeddah|Mecca|Taif|Abha|Yanbu|Jazan|Najran|Al-?Ula|Khamis|גִ׳דַּה|טאיף|יַנְבּוּע|ח׳מיס|עַבְּהַא|ג׳אזאן|عدة مدن|مدن المملكة/.test(t)
+      && (/جدة|مكة|الطائف|أبها|خميس|ينبع|جازان|نجران|العلا|جيزان|الرياض|الخرج|فرسان|Jeddah|Mecca|Taif|Abha|Yanbu|Jazan|Najran|Al-?Ula|Khamis|Riyadh|Al-?Kharj|Farasan|גִ׳דַּה|טאיף|יַנְבּוּע|ח׳מיס|עַבְּהַא|ג׳אזאן|ריאד|אלחַ׳רג׳|פרסאן|عدة مدن|مدن المملكة/.test(t)
         || /السعود|Saudi/.test(t)))
     return "alert";
   if (/cancel(?:led|s)? (?:some )?(?:oil|crude)|oil shipments|נפט.{0,40}ביטל|ביטול משלוחי נפט|Yanbu.{0,40}(?:suspend|halt)|East-West Pipeline|צינור מזרח.?מערב|Aramco.{0,50}(?:cancel|halt|reroute)|Brent.{0,20}\$|Suez Canal.{0,40}(?:oil|tanker)|תעלת סואץ|loadings cut|shipping.{0,30}Bab/i.test(t)
@@ -787,7 +836,7 @@ function detectAction(text: string): Action {
   if (/إفشال محاول|إفشال|افشال|foiled|أحبط|הכשיל/.test(t)) return "foil";
   if (/ينهب|نهب|loot|שדד/.test(t)) return "loot";
   if (/مسيرات جماهيرية|حشود|rally|התכנסות/.test(t)) return "rally";
-  if (/صفقة|هدنة|مفاوض|deal|talks|ceasefire|הפוגה|דיפלומ|استقدام مقاتلين|طلبا إلى سوريا|50 مليون/.test(t)) return "diplomacy";
+  if (/صفقة|هدنة|مفاوض|deal|talks|ceasefire|הפוגה|דיפלומ|استقدام مقاتلين|طلبا.{0,40}سوريا|مقاتلين.{0,40}سوريا|سوريا.{0,50}مقاتلين|رفضت.{0,30}سعود|50 مليون/.test(t)) return "diplomacy";
   return "statement";
 }
 
@@ -797,6 +846,7 @@ function actionToType(a: Action): string {
   if (a === "port") return "port";
   if (a === "vessel") return "vessel";
   if (a === "economy") return "economy";
+  if (a === "diplomacy") return "diplomacy";
   if (a === "alert") return "strike";
   return "statement";
 }
@@ -873,7 +923,8 @@ function listBe(places: string[]): string {
 }
 
 function destZoneOf(place: string): string {
-  if (/ריאד/.test(place)) return "שבמרכז סעודיה";
+  if (/ריאד|אלחַ׳רג׳/.test(place)) return "שבמרכז סעודיה";
+  if (/פרסאן/.test(place)) return "באיי הים האדום מול ג׳אזאן";
   if (/ג׳אזאן|נג׳ראן|שרורה/.test(place)) return "שבדרום סעודיה";
   if (/ח׳מיס|עַבְּהַא|טאיף/.test(place)) return "שבדרום־מערב סעודיה";
   if (/יַנְבּוּע|גִ׳דַּה|מכה/.test(place)) return "שבמערב סעודיה";
@@ -993,6 +1044,28 @@ function trySpecial(text: string, heSrc: string, source = ""): Digest | null {
     const sum = quoteLine("חזאם אלאסד", "הכוחות בתימן מייצרים טילים, כטב״מים ונ״מ — בלי טריליונים לאמריקה.");
     const body = `לפי ${heSrc}: חזאם אלאסד טוען לייצור עצמי של בליסטיים, שיוט, היפר־סוניים, כטב״מים, נ״מ ואמצעי ים, בניגוד לרכש הסעודי מארה״ב.`;
     return { summary: sum, body, places: [], type: "statement" };
+  }
+
+  if ((/ظهر حمير|آزال|ازال|المداني/.test(text) && /مقر أمني|تفجير|انفجار/.test(text) && /صنعاء/.test(text))
+      || (/مقر أمني/.test(text) && /صنعاء/.test(text) && /قتل|مقتل|قتلى/.test(text))) {
+    const sum = "פיצוץ במתחם ביטחוני חות׳י באזאל שבצנעאא׳ — ארבעה הרוגים לפי מקורות מקומיים, בהם מפקד.";
+    const body = `לפי ${heSrc}: פיצוץ פגע במתחם ביטחוני חות׳י בדַ׳הר חִמְיַר שבנפת אזאל בצנעאא׳. מקורות מקומיים מוסרים על ארבעה הרוגים, בהם מפקד המכונה אבו אחמד אלמדני, ושלושה פצועים קשה. יחיא סריע מסר שהכשיל «ניסיונות סעודיים בסגנון דאעשי» בבירה, בלי לפרט יעדים או שיטה. טענות ברשתות על פשיטת כוחות מיוחדים סעודיים לא אומתו במקורות עצמאיים.`;
+    return { summary: sum, body, places: ["אזאל"], type: "combat" };
+  }
+
+  if ((/الرياض|Riyadh/.test(text) && /إنذار|صفار|siren|alert|התרע/.test(text))) {
+    const kharj = /الخرج|Kharj|אלחַ׳רג׳/.test(text);
+    const boom = /انفجار|boom|explos|פיצוץ/.test(text);
+    const first = /أول|first|לראשונה/.test(text);
+    const sum = `התרעות בריאד${kharj ? " ובאלחַ׳רג׳" : ""}${first ? " — לראשונה בבירה מאז תחילת העימות" : ""}${boom ? "; פיצוצים נשמעו בעוליה" : ""}.`;
+    const body = `לפי ${heSrc}: הגנה אזרחית בסעודיה הפעילה התרעות בריאד${kharj ? " ובאלחַ׳רג׳, ממזרח לבירה" : ""}${boom ? ". כתבים שמעו פיצוצים בשכונת עוליה" : ""}. אחר כך נמסר שהסכנה חלפה.`;
+    return { summary: sum, body, places: kharj ? ["ריאד", "אלחַ׳רג׳"] : ["ריאד"], type: "strike" };
+  }
+
+  if (/سوريا/.test(text) && /مقاتلين/.test(text) && /رفض|refused/.test(text) && /سعود|Yemen|اليمن/.test(text)) {
+    const sum = "סוריה דחתה בקשה סעודית לשלוח לוחמים נגד החות׳ים, לפי אלאח׳באר.";
+    const body = `לפי ${heSrc}: דמשק דחתה בנימוס בקשה סעודית מלפני חודשים לארגן כוח סורי לחזית מול החות׳ים. מקורות טורקיים מכחישים מעורבות של אנקרה בהעברת לוחמים.`;
+    return { summary: sum, body, places: [], type: "diplomacy" };
   }
 
   if (/دبور السماء|SKYWASP|شيبا/.test(text) && /صنعاء/.test(text)) {
@@ -1164,7 +1237,7 @@ export function heDigest(source: string, text: string, lean = ""): Digest {
     }
     case "alert": {
       const cities = uniq([...sTargets, ...yPlaces]).filter((p) =>
-        /גִ׳דַּה|גדה|טאיף|יַנְבּוּע|ינבוע|ח׳מיס|עַבְּהַא|עבהא|ג׳אזאן|מכה|נג׳ראן|עֻלָא|פרסאן|שרורה|ריאד/.test(p)
+        /גִ׳דַּה|גדה|טאיף|יַנְבּוּע|ינבוע|ח׳מיס|עַבְּהַא|עבהא|ג׳אזאן|מכה|נג׳ראן|עֻלָא|פרסאן|שרורה|ריאד|אלחַ׳רג׳/.test(p)
       );
       const list = listBe(cities.length ? cities : (sTargets.length ? sTargets : ["סעודיה"]));
       summary = `התרעות ${list}.`;
@@ -1278,7 +1351,9 @@ export function heDigest(source: string, text: string, lean = ""): Digest {
     : `לפי ${heSrc}: ${bodyCore}`.replace(/\s{2,}/g, " ").trim());
   const pinPlaces = action === "alert"
     ? uniq([...sTargets, ...yPlaces])
-    : action === "missile" || action === "drone" || action === "port" || action === "airstrike" || action === "clash" || action === "capture" || action === "recapture"
+    : action === "airstrike"
+    ? (yPlaces.length ? yPlaces : sTargets)
+    : action === "missile" || action === "drone" || action === "port" || action === "clash" || action === "capture" || action === "recapture"
     ? uniq([...sTargets, ...yPlaces])
     : yPlaces;
 
@@ -1349,6 +1424,12 @@ function isIsraeliSource(source: string, url: string): boolean {
 
 function toLiveReport(source: string, url: string, titleOrText: string, at: string, fpSeed: string, lean = ""): LiveReport | null {
   if (isIsraeliSource(source, url)) return null;
+  try {
+    const u = new URL(url);
+    if (!u.pathname || u.pathname === "/" || /^\/[a-z]{2}\/?$/.test(u.pathname)) return null;
+  } catch {
+    return null;
+  }
   if (isOffTopic(titleOrText)) return null;
   const he = heDigest(source, titleOrText, lean);
   if (!he.summary || isVagueHe(he.summary) || isGarbageHe(he.summary)) return null;
@@ -1547,7 +1628,7 @@ function frontBucket(r: LiveReport): string {
   if (/לחג|אלאעברה|אלמצארבה|עדן/.test(s)) return "lahj-south";
   if (/צנעא/.test(s)) return "sanaa";
   if (/ינבוע|גדה|ארמקו|נפט|סואץ/.test(s) || r.type === "economy") return "energy";
-  if (/גאזאן|נגראן|חמיס|עבהא|טאיף|מכה|ריאד/.test(s)) return "ksa-strike";
+  if (/גאזאן|נגראן|חמיס|עבהא|טאיף|מכה|ריאד|אלחרג|פרסאן/.test(s)) return "ksa-strike";
   return (r.type || "x") + "-other";
 }
 
@@ -1575,7 +1656,9 @@ function storyKey(r: LiveReport): string {
   if (/סמיר אלחאג׳/.test(s)) return "sabri-politics";
   if (/אלחֻגַ׳ריה|נשק אישי/.test(s)) return "hujariya-plea";
   if (/30 לוחמים חות׳ים|אלואזעיה.*60/.test(s)) return "waziyah-90";
+  if (/פיצוץ במתחם|אזאל|אלמדני/.test(s)) return "sanaa-azal-blast";
   if (/לוחמים מסוריה|סוריה.*לוחמים/.test(s)) return "syria-fighters";
+  if (/התרעות/.test(s) && /ריאד/.test(s)) return `${nightYmd(r.at)}|alert|riyadh`;
   if (/ביטל.*נפט|משלוחי נפט|Yanbu|יַנְבּוּע.*נפט/.test(s)) return "oil-cancel";
   if (/מזהיר משפחות|אזהרה למשפחות/.test(s)) return "giants-warn";
   if (/התרעות/.test(s)) return `${nightYmd(r.at)}|alert|ksa`;
@@ -1618,8 +1701,15 @@ async function persistKineticToDesk(reports: LiveReport[]) {
     let added = 0;
     for (const r of reports) {
       if (!r.url || haveUrl.has(r.url) || haveFp.has(r.fp)) continue;
+      try {
+        const u = new URL(r.url);
+        if (!u.pathname || u.pathname === "/" || /^\/[a-z]{2}\/?$/.test(u.pathname)) continue;
+      } catch {
+        continue;
+      }
       const kinetic = r.type === "combat" || r.type === "strike" || r.type === "port" || r.type === "vessel";
-      const keepFeed = kinetic || r.type === "economy";
+      const keepFeed = kinetic || r.type === "economy"
+        || (r.type === "diplomacy" && /סוריה|לוחמים מסוריה/.test(r.summary || ""));
       if (!keepFeed) continue;
       const row = {
         fp: r.fp,
@@ -1640,7 +1730,7 @@ async function persistKineticToDesk(reports: LiveReport[]) {
       haveFp.add(r.fp);
       added += 1;
       if (/התרעות/.test(r.summary)) {
-        for (const name of ["גִ׳דַּה", "טאיף", "יַנְבּוּע", "ח׳מיס מושייט", "עַבְּהַא", "ג׳אזאן", "נג׳ראן", "עֻלָא", "מכה"]) {
+        for (const name of ["גִ׳דַּה", "טאיף", "יַנְבּוּע", "ח׳מיס מושייט", "עַבְּהַא", "ג׳אזאן", "נג׳ראן", "עֻלָא", "מכה", "ריאד", "אלחַ׳רג׳", "פרסאן"]) {
           if (!r.summary.includes(name) && !(r.text || "").includes(name)) continue;
           const ll = PLACE_LL[name];
           if (!ll) continue;
@@ -1678,6 +1768,7 @@ async function persistKineticToDesk(reports: LiveReport[]) {
       }
     }
     if (!added) return;
+    data.reports.sort((a, b) => String(b.at || "").localeCompare(String(a.at || "")));
     data.updatedAt = jerusalemIso();
     await writeFile(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
   } catch {

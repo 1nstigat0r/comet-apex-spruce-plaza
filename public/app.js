@@ -1,5 +1,5 @@
 const COLORS = { houthi:'#c45c26', plc:'#22c55e', saudi:'#1f8a7a', contested:'#e9c46a', mixed:'#457b9d' };
-const EVENT_COLORS = { combat:'#facc15', strike:'#dc2626', vessel:'#06b6d4', port:'#f97316', statement:'#a855f7' };
+const EVENT_COLORS = { combat:'#facc15', strike:'#dc2626', vessel:'#06b6d4', port:'#f97316' };
 const LABELS = { houthi:'חות׳ים', plc:'הממשלה הלגיטימית', saudi:'סעודיה', contested:'במחלוקת', mixed:'מעורב' };
 const INITIAL_REPORTS = 8;
 const MORE_STEP = 12;
@@ -22,6 +22,12 @@ const PLACE_COORDS = {
   "ג׳דה":[21.4858,39.1925],
   "מכה":[21.3891,39.8579],
   "ריאד":[24.7136,46.6753],
+  "אלחַ׳רג׳":[24.155,47.305],
+  "אלחרג׳":[24.155,47.305],
+  "פרסאן":[16.702,42.118],
+  "עוליה":[24.693,46.685],
+  "אזאל":[15.409,44.207],
+  "דַ׳הר חִמְיַר":[15.412,44.208],
   "אלשֻקַיְק":[17.7,42.05],
 
   "צנעאא׳":[15.3694,44.191],
@@ -222,6 +228,9 @@ const PLACE_META = {
   "א־בַּלַק": { kind: "רכס", where: "ממערב־דרום למאריב" },
   "אלבַּלַק": { kind: "רכס", where: "ממערב־דרום למאריב" },
   "ריאד": { kind: "בירת סעודיה", where: "במרכז הממלכה" },
+  "אלחַ׳רג׳": { kind: "עיר", where: "ממזרח לריאד" },
+  "פרסאן": { kind: "איים", where: "בים האדום מול ג׳אזאן" },
+  "אזאל": { kind: "נפה", where: "בצפון צנעאא׳" },
   "ח׳מיס מושייט": { kind: "עיר", where: "בדרום־מערב סעודיה" },
   "אבהא": { kind: "עיר", where: "בדרום־מערב סעודיה" },
   "נג׳ראן": { kind: "עיר", where: "בדרום סעודיה ליד הגבול" },
@@ -335,7 +344,7 @@ expandPlaceAliasMaps();
 function placePhrase(name, meta) {
   if (!meta || meta.skip) return name;
   // Well-known places — no geography lecture
-  if (/באב|צנעא|עדן|תעז|מאריב|אלמח׳א|מַיוּן|מיון|חַניש|חניש|אלחודיידה|לחג׳|סעדה|ריאד|ג׳יבוטי|ים האדום|אלדאלע|אלג׳וף|גִ׳דַּה|גדה|טאיף|יַנְבּוּע|ינבוע|ח׳מיס|עַבְּהַא|עבהא|ג׳אזאן|נג׳ראן|עֻלָא|מכה/.test(name)) {
+  if (/באב|צנעא|עדן|תעז|מאריב|אלמח׳א|מַיוּן|מיון|חַניש|חניש|אלחודיידה|לחג׳|סעדה|ריאד|ג׳יבוטי|ים האדום|אלדאלע|אלג׳וף|גִ׳דַּה|גדה|טאיף|יַנְבּוּע|ינבוע|ח׳מיס|עַבְּהַא|עבהא|ג׳אזאן|נג׳ראן|עֻלָא|מכה|אלחַ׳רג׳|פרסאן/.test(name)) {
     return name;
   }
   const kind = meta.kind || '';
@@ -394,7 +403,7 @@ function annotatePlaces(text) {
 
 let map, geoLayer, saudiGeoLayer = null, eventLayers = [], islandLayers = [], islandGeoCache = null, data = null, geoCache = null, saudiGeoCache = null;
 let miniGeo = null;
-let layersOn = { houthi:true, plc:true, saudi:true, contested:true, combat:true, strike:true, vessel:true, port:true, statement:true };
+let layersOn = { houthi:true, plc:true, saudi:true, contested:true, combat:true, strike:true, vessel:true, port:true };
 let frontFloatTimer = null;
 let frontFloatIdx = null;
 let frontFloatWired = false;
@@ -1309,7 +1318,7 @@ function isCapabilityOrPriorityStatement(text) {
 function hasGroundCombat(text) {
   const t = String(text || '');
   // Do NOT treat bare "ארטילריה" / "שחרור … עדיפות" as combat — those are often statements
-  return /התכתשות|התכתש|עימות(?:ים)?|לחימה|קרבות?\s|קרב מטווח|מטווח אפס|ניסיון חדיר|חדירה חות|ירי ארטילרי|הפגז(?:ה|ות)|הפגיז|מרגמ(?:ה|ות)|חילופי אש|ארטילריה (?:כבדה )?(?:על|לעבר)|התקפת־נגד|התקפת נגד|בלימת התקפ|התבצר|השתלטו על אתר|השבת אתרים|שחרור\/פריצה|טענה לשחרור (?:עיירה|כפר|גבעה|אתר)|שליטה מלאה ברום|לוחמים מהאזור|חילופי מהלומות קרק|לחימה נוזלית|כוחות .+ התקדמ|ניסו להתקדם לעבר/.test(t);
+  return /התכתשות|התכתש|עימות(?:ים)?|לחימה|קרבות?\s|קרב מטווח|מטווח אפס|ניסיון חדיר|חדירה חות|ירי ארטילרי|הפגז(?:ה|ות)|הפגיז|מרגמ(?:ה|ות)|חילופי אש|ארטילריה (?:כבדה )?(?:על|לעבר)|התקפת־נגד|התקפת נגד|בלימת התקפ|התבצר|השתלטו על אתר|השבת אתרים|שחרור\/פריצה|טענה לשחרור (?:עיירה|כפר|גבעה|אתר)|שליטה מלאה ברום|לוחמים מהאזור|חילופי מהלומות קרק|לחימה נוזלית|כוחות .+ התקדמ|ניסו להתקדם לעבר|פיצוץ במתחם|מתחם ביטחוני/.test(t);
 }
 
 function hasKineticStrike(text) {
@@ -2292,7 +2301,7 @@ function buildMapPins(d) {
     if (isWeakHeadline(pin.labelHe)) return;
     if (!pin.url || isHomepageOrSectionUrl(pin.url)) return;
     const cat = classifyForMap(pin.text || pin.labelHe || '', pin.type);
-    if (!cat) return; // humanitarian / foreign / other → feed only
+    if (!cat || cat === 'statement') return; // humanitarian / foreign / statements → feed only
     if (!allowCoordsForCategory(cat, pin.place, pin.lat, pin.lng)) return;
     pin.mapCat = cat;
     pin.type = cat === 'statement' ? 'statement' : (cat === 'strike' ? (pin.type === 'missile' ? 'missile' : 'strike') : (pin.type || 'combat'));
@@ -2324,7 +2333,7 @@ function buildMapPins(d) {
       : summaryFrom(blob);
     if (isWeakHeadline(label)) return;
     const cat = classifyForMap(blob, r.type);
-    if (!cat) return;
+    if (!cat || cat === 'statement') return;
     if (r.live && !(cat === 'strike' || cat === 'combat' || cat === 'vessel' || cat === 'port')) return;
     if (!allowCoordsForCategory(cat, place, lat, lng)) return;
     push({
@@ -2470,8 +2479,8 @@ function renderEvents(d) {
     if (cat === 'combat' && !layersOn.combat) return;
     if (cat === 'vessel' && !layersOn.vessel) return;
     if (cat === 'port' && !layersOn.port) return;
-    if (cat === 'statement' && !layersOn.statement) return;
-    if (!['strike','combat','vessel','port','statement'].includes(cat)) return;
+    if (cat === 'statement') return;
+    if (!['strike','combat','vessel','port'].includes(cat)) return;
     const key = ev.place || (ev.lat + ',' + ev.lng);
     const n = placeCount[key] || 0;
     placeCount[key] = n + 1;
@@ -2807,7 +2816,7 @@ function setControlDayByIndex(i) {
   activeEpoch = epochForDate(activeControlYmd);
   mapMode = 'control';
   try { document.body.classList.add('ctrl-mode'); } catch (e) {}
-  ['combat', 'strike', 'vessel', 'port', 'statement'].forEach((k) => { layersOn[k] = false; });
+  ['combat', 'strike', 'vessel', 'port'].forEach((k) => { layersOn[k] = false; });
   try { if (data) renderLegend(data); } catch (e) {}
   const lab = document.getElementById('ctrl-slider-label');
   if (lab && activeControlYmd) {
@@ -2947,8 +2956,7 @@ function renderLegend(d) {
     ${row('combat', EVENT_COLORS.combat, 'לחימה קרקעית')}
     ${row('strike', EVENT_COLORS.strike, 'שיגור')}
     ${row('vessel', EVENT_COLORS.vessel, 'פגיעה בכלי שיט')}
-    ${row('port', EVENT_COLORS.port, 'פגיעה בנמל')}
-    ${row('statement', EVENT_COLORS.statement, 'התבטאות')}`;
+    ${row('port', EVENT_COLORS.port, 'פגיעה בנמל')}`;
   document.querySelectorAll('#legend .leg-item').forEach(btn => {
     btn.onclick = (ev) => {
       if (ev) { ev.preventDefault(); ev.stopPropagation(); }

@@ -74,3 +74,49 @@ test("airstrike flash has no דווח על prefix", () => {
   assert.match(d.summary, /^תקיפה אווירית/);
   assert.doesNotMatch(d.summary, /דווח על/);
 });
+
+test("Riyadh and Al-Kharj sirens flash with explosions", () => {
+  const d = heDigest(
+    "BBC",
+    "Saudi civil defence issued the first air raid alerts for Riyadh and Al-Kharj. Reuters journalists heard two explosions in Olaya. All-clear later.",
+    "intl",
+  );
+  assert.match(d.summary, /התרעות/);
+  assert.match(d.summary, /ריאד/);
+  assert.match(d.summary, /אלחַ׳רג׳/);
+  assert.doesNotMatch(d.summary, /^דווח על/);
+  assert.equal(d.type, "strike");
+});
+
+test("Sana'a security compound blast is combat, not a statement", () => {
+  const d = heDigest(
+    "Yemen Future",
+    "أقرت جماعة الحوثي بوقوع عملية أمنية داخل العاصمة صنعاء. التفجير استهدف فجر الجمعة مقرا أمنيا في منطقة ظهر حمير بمديرية آزال. مقتل أربعة بينهم قيادي يدعى أبو أحمد المداني وإصابة ثلاثة.",
+    "intl",
+  );
+  assert.match(d.summary, /פיצוץ/);
+  assert.match(d.summary, /אזאל/);
+  assert.equal(d.type, "combat");
+  assert.doesNotMatch(d.summary, /^דווח על/);
+});
+
+test("Syria refused Saudi request for fighters is diplomacy", () => {
+  const d = heDigest(
+    "Al-Akhbar",
+    "تقرير تركي: سوريا رفضت طلباً سعودياً لإرسال مقاتلين إلى اليمن لمواجهة أنصار الله. مصادر تركية تنفي دورا لأنقرة.",
+    "houthi",
+  );
+  assert.match(d.summary, /סוריה דחתה/);
+  assert.match(d.summary, /לוחמים/);
+  assert.equal(d.type, "diplomacy");
+});
+
+test("Saree foil-only claim stays a statement", () => {
+  const d = heDigest(
+    "Al-Thawrah",
+    "العميد يحيى سريع: إفشال محاولات إجرامية في العاصمة صنعاء قام بها العدو السعودي مصبوغة بالصبغة الداعشية ولن تمر دون رد.",
+    "houthi",
+  );
+  assert.equal(d.type, "statement");
+  assert.match(d.summary, /סריע/);
+});
