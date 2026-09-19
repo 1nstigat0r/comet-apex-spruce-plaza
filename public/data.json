@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T09:07:20+03:00",
+  "updatedAt": "2026-09-19T09:39:23+03:00",
   "control": [
     {
       "id": "houthi",
@@ -272,6 +272,21 @@
   ],
   "reports": [
     {
+      "fp": "live-www-ypagency-net-892130",
+      "priority": 1,
+      "at": "2026-09-19T09:17:13+03:00",
+      "source": "YPA",
+      "url": "https://www.ypagency.net/892130",
+      "type": "strike",
+      "summary": "תקיפה אווירית בצנעאא׳ וריאד.",
+      "text": "לפי YPA: תקיפה אווירית בצנעאא׳ וריאד.",
+      "live": true,
+      "confidence": 3,
+      "place": "צנעאא׳",
+      "lat": 15.3694,
+      "lng": 44.191
+    },
+    {
       "fp": "live-t-me-alarabiya-165573",
       "priority": 1,
       "at": "2026-09-19T07:34:44+03:00",
@@ -345,6 +360,21 @@
       "place": "תעז",
       "lat": 13.58,
       "lng": 44.02
+    },
+    {
+      "fp": "live-alkhabaralyemeni-net-2026-09-19-355526-",
+      "priority": 1,
+      "at": "2026-09-19T03:07:30+03:00",
+      "source": "Al-Khabar al-Yemeni",
+      "url": "https://alkhabaralyemeni.net/2026/09/19/355526/",
+      "type": "strike",
+      "summary": "התרעות בריאד ובאלחַ׳רג׳ — לראשונה בבירה מאז תחילת העימות; פיצוצים נשמעו בעוליה.",
+      "text": "לפי אלח׳בר אלימני: הגנה אזרחית בסעודיה הפעילה התרעות בריאד ובאלחַ׳רג׳, ממזרח לבירה. כתבים שמעו פיצוצים בשכונת עוליה. אחר כך נמסר שהסכנה חלפה.",
+      "live": true,
+      "confidence": 3,
+      "place": "ריאד",
+      "lat": 24.7136,
+      "lng": 46.6753
     },
     {
       "fp": "live-www-aa-com-tr-en-middle-east-yemeni-official-says-government-forces-reto",
@@ -654,6 +684,21 @@
       "place": "אלואזעיה",
       "lat": 13.35,
       "lng": 43.55
+    },
+    {
+      "fp": "live-alkhabaralyemeni-net-2026-09-18-355520-",
+      "priority": 1,
+      "at": "2026-09-18T21:35:35+03:00",
+      "source": "Al-Khabar al-Yemeni",
+      "url": "https://alkhabaralyemeni.net/2026/09/18/355520/",
+      "type": "strike",
+      "summary": "תקיפה אווירית בתעז וח׳מיס מושייט.",
+      "text": "לפי אלח׳בר אלימני: תקיפה אווירית בתעז וח׳מיס מושייט.",
+      "live": true,
+      "confidence": 3,
+      "place": "תעז",
+      "lat": 13.58,
+      "lng": 44.02
     },
     {
       "fp": "desk-2026-09-18-sanaa-azal-blast",
@@ -4548,6 +4593,58 @@
     }
   ],
   "events": [
+    {
+      "fp": "live-alkhabaralyemeni-net-2026-09-19-355526--pin-אלחַ׳רג׳",
+      "at": "2026-09-19T03:07:30+03:00",
+      "type": "strike",
+      "lat": 24.155,
+      "lng": 47.305,
+      "place": "אלחַ׳רג׳",
+      "labelHe": "התרעות באלחַ׳רג׳.",
+      "text": "לפי אלח׳בר אלימני: הגנה אזרחית בסעודיה הפעילה התרעות בריאד ובאלחַ׳רג׳, ממזרח לבירה. כתבים שמעו פיצוצים בשכונת עוליה. אחר כך נמסר שהסכנה חלפה.",
+      "source": "Al-Khabar al-Yemeni",
+      "url": "https://alkhabaralyemeni.net/2026/09/19/355526/",
+      "mapOnly": true
+    },
+    {
+      "fp": "live-alkhabaralyemeni-net-2026-09-19-355526--pin-ריאד",
+      "at": "2026-09-19T03:07:30+03:00",
+      "type": "strike",
+      "lat": 24.7136,
+      "lng": 46.6753,
+      "place": "ריאד",
+      "labelHe": "התרעות בריאד.",
+      "text": "לפי אלח׳בר אלימני: הגנה אזרחית בסעודיה הפעילה התרעות בריאד ובאלחַ׳רג׳, ממזרח לבירה. כתבים שמעו פיצוצים בשכונת עוליה. אחר כך נמסר שהסכנה חלפה.",
+      "source": "Al-Khabar al-Yemeni",
+      "url": "https://alkhabaralyemeni.net/2026/09/19/355526/",
+      "mapOnly": true
+    },
+    {
+      "fp": "live-www-ypagency-net-892130",
+      "at": "2026-09-19T09:17:13+03:00",
+      "type": "strike",
+      "lat": 15.3694,
+      "lng": 44.191,
+      "place": "צנעאא׳",
+      "labelHe": "תקיפה אווירית בצנעאא׳ וריאד.",
+      "text": "לפי YPA: תקיפה אווירית בצנעאא׳ וריאד.",
+      "source": "YPA",
+      "url": "https://www.ypagency.net/892130",
+      "mapOnly": false
+    },
+    {
+      "fp": "live-alkhabaralyemeni-net-2026-09-18-355520-",
+      "at": "2026-09-18T21:35:35+03:00",
+      "type": "strike",
+      "lat": 13.58,
+      "lng": 44.02,
+      "place": "תעז",
+      "labelHe": "תקיפה אווירית בתעז וח׳מיס מושייט.",
+      "text": "לפי אלח׳בר אלימני: תקיפה אווירית בתעז וח׳מיס מושייט.",
+      "source": "Al-Khabar al-Yemeni",
+      "url": "https://alkhabaralyemeni.net/2026/09/18/355520/",
+      "mapOnly": false
+    },
     {
       "fp": "live-t-me-alarabiya-165573",
       "at": "2026-09-19T07:34:44+03:00",
